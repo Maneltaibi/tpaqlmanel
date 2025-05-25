@@ -3,12 +3,6 @@ public class BankAccount {
     private double interestRate;
 
     public BankAccount(double balance, double interestRate) {
-        if (balance < 0) {
-            throw new IllegalArgumentException("Initial balance must be non-negative");
-        }
-        if (interestRate < 0) {
-            throw new IllegalArgumentException("Interest rate must be non-negative");
-        }
         this.balance = balance;
         this.interestRate = interestRate;
     }
@@ -33,6 +27,9 @@ public class BankAccount {
     public void transfer(double amount, BankAccount other) {
         if (other == null) {
             throw new NullPointerException("Other account must not be null");
+        }
+        if (amount < 0) {
+            throw new IllegalArgumentException("Amount must be positive");
         }
         withdraw(amount);
         other.deposit(amount);

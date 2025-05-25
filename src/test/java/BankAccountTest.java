@@ -1,58 +1,57 @@
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-class BankAccountTest {
-    @Test
-    void testDeposit() {
-        BankAccount account = new BankAccount(100, 0.05);
-        account.deposit(50);
-        assertEquals(150, account.getBalance());
+public class BankAccountTest {
+
+    @Test void depositTest() {
+        BankAccount acc = new BankAccount(100, 0.05);
+        acc.deposit(50);
+        assertEquals(150, acc.getBalance());
     }
 
-    @Test
-    void testWithdraw() {
-        BankAccount account = new BankAccount(100, 0.05);
-        account.withdraw(50);
-        assertEquals(50, account.getBalance());
+    @Test void depositNegativeThrows() {
+        BankAccount acc = new BankAccount(100, 0.05);
+        assertThrows(IllegalArgumentException.class, () -> acc.deposit(-10));
     }
 
-    @Test
-    void testWithdrawInsufficientFunds() {
-        BankAccount account = new BankAccount(50, 0.05);
-        assertThrows(IllegalStateException.class, () -> account.withdraw(100));
+    @Test void withdrawTest() {
+        BankAccount acc = new BankAccount(100, 0.05);
+        acc.withdraw(40);
+        assertEquals(60, acc.getBalance());
     }
 
-    @Test
-    void testTransfer() {
-        BankAccount account1 = new BankAccount(100, 0.05);
-        BankAccount account2 = new BankAccount(50, 0.05);
-        account1.transfer(30, account2);
-        assertEquals(70, account1.getBalance());
-        assertEquals(80, account2.getBalance());
+    @Test void withdrawTooMuchThrows() {
+        BankAccount acc = new BankAccount(50, 0.05);
+        assertThrows(IllegalStateException.class, () -> acc.withdraw(100));
     }
 
-    @Test
-    void testAddInterest() {
-        BankAccount account = new BankAccount(100, 0.05);
-        account.addInterest();
-        assertEquals(105, account.getBalance(), 0.01);
+    @Test void withdrawNegativeThrows() {
+        BankAccount acc = new BankAccount(100, 0.05);
+        assertThrows(IllegalArgumentException.class, () -> acc.withdraw(-1));
     }
 
-    @Test
-    void testNegativeDeposit() {
-        BankAccount account = new BankAccount(100, 0.05);
-        assertThrows(IllegalArgumentException.class, () -> account.deposit(-10));
+    @Test void transferValid() {
+        BankAccount acc1 = new BankAccount(200, 0.05);
+        BankAccount acc2 = new BankAccount(100, 0.03);
+        acc1.transfer(50, acc2);
+        assertEquals(150, acc1.getBalance());
+        assertEquals(150, acc2.getBalance());
     }
 
-    @Test
-    void testNegativeWithdraw() {
-        BankAccount account = new BankAccount(100, 0.05);
-        assertThrows(IllegalArgumentException.class, () -> account.withdraw(-10));
+    @Test void transferNegativeThrows() {
+        BankAccount acc1 = new BankAccount(100, 0.05);
+        BankAccount acc2 = new BankAccount(100, 0.05);
+        assertThrows(IllegalArgumentException.class, () -> acc1.transfer(-10, acc2));
     }
 
-    @Test
-    void testNullTransfer() {
-        BankAccount account1 = new BankAccount(100, 0.05);
-        assertThrows(NullPointerException.class, () -> account1.transfer(50, null));
+    @Test void transferNullThrows() {
+        BankAccount acc1 = new BankAccount(100, 0.05);
+        assertThrows(NullPointerException.class, () -> acc1.transfer(10, null));
+    }
+
+    @Test void addInterestTest() {
+        BankAccount acc = new BankAccount(100, 0.1);
+        acc.addInterest();
+        assertEquals(110.0, acc.getBalance(), 0.0001);
     }
 }

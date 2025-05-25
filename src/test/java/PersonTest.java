@@ -8,6 +8,14 @@ class PersonTest {
         assertEquals("John Doe", person.getFullName());
     }
 
+    @Test void fullNameEmptyTest() {
+        assertEquals(" ", new Person("", "", 20).getFullName());
+    }
+
+    @Test void isAdultBoundary18() {
+        assertTrue(new Person("Test", "A", 18).isAdult());
+    }
+
     @Test
     void testIsAdult() {
         Person adult = new Person("Alice", "Smith", 20);
